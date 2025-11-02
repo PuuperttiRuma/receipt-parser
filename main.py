@@ -22,6 +22,14 @@ def get_date(line):
     return None
 
 
+def parse_transaction(line):
+    words = line.split("    ")
+    item = words[0]
+    price = words[-1]
+
+    return item.strip("* "), price.strip("* ")
+
+
 def main():
     filename = sys.argv[1]
 
@@ -46,7 +54,8 @@ def main():
         elif line == "------------------------------------------":
             is_collecting = not is_collecting
         elif is_collecting:
-            new_lines.append(f"{date};{line}")
+            item, price = parse_transaction(line)
+            new_lines.append(f"{date};{item};{price}")
 
     print(new_lines)
 
